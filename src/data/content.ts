@@ -1,5 +1,4 @@
 import type { IconName } from "@/components/icons";
-import vikasPhoto from "@/assets/team/vikas-mittal.jpg";
 
 /* ---------- Technologies ---------- */
 export const techCategories: { name: string; icon: IconName; items: string[] }[] = [
@@ -111,7 +110,7 @@ export const values: { icon: IconName; title: string; text: string }[] = [
 export const founder = {
   name: "Vikas Mittal",
   role: "Founder & CEO",
-  photo: vikasPhoto,
+  photo: { src: "/team/vikas-mittal.jpg", width: 800, height: 1000 }, // file lives in /public/team
   linkedin: "", // TODO (optional): Vikas's LinkedIn profile URL
   summary:
     "A technology leader with 25+ years of experience turning complex business challenges into scalable, intelligent solutions.",

@@ -1,10 +1,21 @@
+# dependencies (install on the build host, never commit)
 node_modules
+
+# Next.js build output
 .next
 out
 build
-.env*.local
-.env
-*.tsbuildinfo
 next-env.d.ts
+*.tsbuildinfo
+
+# temporary files Next.js writes while compiling next.config.ts (left behind if a build crashes)
+*.next.config.*
+!next.config.mjs
+
+# env files
+.env
+.env*.local
+
+# misc
 .DS_Store
 npm-debug.log*

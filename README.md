@@ -4,7 +4,8 @@ Corporate website for **Flixon IT Solutions Private Limited**, built with **Next
 
 ## Run it
 
-Requires Node.js 20.9 or newer.
+Requires **Node.js 20.9+ (22 recommended, see `.nvmrc`)** on a Linux build host with **glibc 2.29 or newer**
+(Ubuntu 20.04+, Debian 11+, Amazon Linux 2023, RHEL 9). Check with `ldd --version`.
 
 ```bash
 npm install
@@ -12,6 +13,39 @@ npm run dev        # http://localhost:3000
 npm run build      # production build
 npm start          # run the production build
 ```
+
+### Build with Docker (works on any host)
+
+```bash
+docker build -t flixon-website .
+docker run -p 3000:3000 flixon-website
+```
+
+### Deploying on Hostinger (or other shared hosting with an older Linux)
+
+`npm run build` runs `next build --webpack`. Hostinger's build servers cannot load Next.js's native
+compiler, and Turbopack (the Next.js 16 default) only works with it; Webpack works with the WebAssembly
+fallback, so builds take a little longer but succeed. Images are served as-is (`images.unoptimized`), so the
+site never needs the native `sharp` library. In hPanel, set the build command to `npm run build`, the start
+command to `npm start`, and choose Node.js 22 (or 20).
+
+### Troubleshooting: `GLIBC_2.29 not found` / `ERR_MODULE_NOT_FOUND ... .next.config`
+
+Next.js, Turbopack and Tailwind v4 ship native Linux binaries built for glibc 2.29+. On older hosts
+(Amazon Linux 2, CentOS 7/8, Debian 10, Ubuntu 18.04) the native SWC binary cannot load. Next.js then falls
+back to WASM, which cannot compile `next.config.ts` or run Turbopack builds. The config is now
+`next.config.mjs` so it no longer needs compiling, but the build itself still needs a newer host:
+
+1. Use a newer build image (for example Amazon Linux 2023 on AWS Amplify/CodeBuild, `ubuntu-latest` on
+   GitHub Actions), **or** build with the Dockerfile above.
+2. Never commit `node_modules` or files named `*.next.config.*`. If they are already committed:
+   ```bash
+   git rm -r --cached node_modules
+   git rm --cached -- *.next.config.ts *.next.config.mjs 2>/dev/null
+   git rm --cached next.config.ts 2>/dev/null   # replaced by next.config.mjs
+   git commit -m "Remove node_modules and stray Next.js config files"
+   ```
+3. Do a clean install on the build host: `rm -rf node_modules .next && npm install && npm run build`.
 
 ## Pages
 

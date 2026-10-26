@@ -17,9 +17,10 @@ export default function FounderSpotlight() {
           <div className="pointer-events-none absolute -inset-y-6 inset-x-0 rounded-[2.5rem] sm:-inset-6 bg-gradient-to-br from-aqua/25 via-brand/20 to-iris/25 blur-3xl" aria-hidden="true" />
           <div className="gradient-border group relative overflow-hidden rounded-[2rem] bg-ink-2">
             <Image
-              src={f.photo}
+              src={f.photo.src}
+              width={f.photo.width}
+              height={f.photo.height}
               alt={`${f.name}, ${f.role} of ${site.name}`}
-              placeholder="blur"
               sizes="(min-width: 1024px) 440px, 90vw"
               className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.03]"
             />
